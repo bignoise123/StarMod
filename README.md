@@ -4,7 +4,7 @@
  Be careful though, similar mods to this are [BANNED](https://hypixel.net/threads/mod-request.1581541/).
 # How to install
 
- Go to ChatTriggers website (https://chattriggers.com) and install the latest version, drag the .jar file in your mods folder and launch Minecraft. Join any server or singleplayer world and run `/ct files`. Now, download and extract the latest from the releases tab, then drag the Bedwars and `StarMod` folder into it, finally, restart your game or type `/ct load`. You are now ready to use the module.
+ Go to ChatTriggers website (https://chattriggers.com) and install the latest version, drag the .jar file in your mods folder and launch Minecraft. Join any server or singleplayer world and run `/ct files`. Now, download and extract the latest from the releases tab, then drag the `StarMod` folder into it, finally, restart your game or type `/ct load`. You are now ready to use the module.
 
 # Usage
 <p align="center">
