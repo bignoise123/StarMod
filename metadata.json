@@ -1,0 +1,8 @@
+{
+    "name": "StarMod",
+    "description": "Displays players bed/skywars star in the tablist and next to their player in-game.",
+    "creator": "bignig123",
+    "version": "1.0.0",
+    "entry": "index.js",
+    "requires": ["requestV2"]
+}
