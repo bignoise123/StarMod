@@ -1,7 +1,7 @@
 import request from "requestv2"
 
 
-let settings = FileLib.read("StarMod","./settings.json")
+let settings = FileLib.read("StarMod", "./settings.json")
 
 if (settings) {
     settings = JSON.parse(settings)
@@ -14,12 +14,35 @@ else {
 let skywarsLevelDict = {}
 let bedwarsLevelDict = {}
 let rateLimitList = []
-let keychecked = false
+let keyChecked = false
 let modeDict = null
 
 register("worldLoad", worldLoad)
 register("step", getPlayers)
 register("renderWorld", renderTag)
+
+
+// Autoupdater
+const File = Java.type("java.io.File");
+
+request("https://api.github.com/repos/bignigga123/StarMod/releases/latest")
+.then(function(response) {
+    let data = JSON.parse(response)
+    let version = JSON.parse(FileLib.read("StarMod","./metadata.json"))["version"]
+    let newVersion = data.name.split(" ")[0].slice(1)
+    if (newVersion.localeCompare(version, undefined, { numeric: true, sensitivity: 'base' }) == 1) { // If older
+        try {
+            urlToFile(data.assets[0].browser_download_url, `${Config.modulesFolder}/temp.zip`)
+            FileLib.unzip(`${Config.modulesFolder}/temp.zip`, Config.modulesFolder)
+            ChatTriggers.loadCT()
+        }
+
+        finally {
+            FileLib.deleteDirectory(new File(Config.modulesFolder, "temp.zip"))
+        }
+
+    }
+})
 
 
 register("chat", (event) => {
@@ -31,7 +54,7 @@ register("chat", (event) => {
 
 
 function worldLoad() {
-    if (!keychecked && settings["enable"]) {
+    if (!keyChecked && settings["enable"]) {
         if (settings["apikey"]) {
             request("https://api.hypixel.net/key?key=" + settings["apikey"])
                 .catch(function(response) {
@@ -45,7 +68,7 @@ function worldLoad() {
             ChatLib.chat("§e§lStar§6§l§lMod§f API key is not set! Set with '/api new' or '/starmod apikey'.")
         }
 
-        keychecked = true
+        keyChecked = true
     }
 
     // Clear names that failed fetching from API
@@ -167,7 +190,7 @@ function getfromAPI(username) {
         rateLimitList.push(Date.now())
         request("https://api.hypixel.net/player?key=" + settings["apikey"] +"&name=" + username)
         .then(function(response) {
-            var data = JSON.parse(response)
+            let data = JSON.parse(response)
             try {
                 skywarsLevelDict[username] = skywarsColourAndFormat(~~getSkywarsLevel(data.player.stats.SkyWars.skywars_experience))
             }
@@ -619,8 +642,28 @@ function colourizeText(colours, str, double = false) {
     return tempstring
 }
 
+// Taken from https://chattriggers.com/modules/v/FileUtilities
+const Byte = Java.type("java.lang.Byte");
+const PrintStream = Java.type("java.io.PrintStream");
+const URL = Java.type("java.net.URL");
+        
+function urlToFile(url, destination) {
+    const d = new File(destination);
+    d.getParentFile().mkdirs();
+    const connection = new URL(url).openConnection();
+    const IS = connection.getInputStream();
+    const FilePS = new PrintStream(destination);
+    let buf = new Packages.java.lang.reflect.Array.newInstance(Byte.TYPE, 65536);
+    let len;
+    while ((len = IS.read(buf)) > 0) {
+        FilePS.write(buf, 0, len);
+    }
+    IS.close();
+    FilePS.close();
+}
 
-// https://stackoverflow.com/questions/5582248/split-a-string-only-the-at-the-first-n-occurrences-of-a-delimiter
+
+// Taken from https://stackoverflow.com/questions/5582248/split-a-string-only-the-at-the-first-n-occurrences-of-a-delimiter
 function splitWithTail(str, delim, count){
     let arr = str.split(delim),
         result = arr.splice(0, count)
