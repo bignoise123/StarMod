@@ -42,7 +42,7 @@ function worldLoad() {
         }
         
         else {
-            ChatLib.chat("§e§lStar§6§l§lMod§f API key is not set! set with '/api new' or '/starmod apikey'.")
+            ChatLib.chat("§e§lStar§6§l§lMod§f API key is not set! Set with '/api new' or '/starmod apikey'.")
         }
 
         keychecked = true
@@ -207,7 +207,7 @@ function getfromAPI(username) {
 function renderTag() {
     if (modeDict && settings["enable"] && ["both", "player"].includes(settings["mode"])) {
         World.getAllPlayers().forEach(entity => {
-            if (entity.getName() in modeDict) {
+            if (entity.getName() in modeDict && entity.getPing() == 1) {
                 let str = modeDict[entity.getName()]
 
                 if (entity.getName() === Player.getName() || str == '') return // Don't draw tag on your player or blank string.
