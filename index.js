@@ -317,10 +317,10 @@ function drawString(str, x, y, z, position, scale, grow, walls, shadow, box) {
         let tagWidth = textWidth / 2
         net.minecraft.client.renderer.GlStateManager.func_179090_x()
         worldRenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f)
-        worldRenderer.func_181662_b((-tagWidth - 2), (-1), 0.01).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
-        worldRenderer.func_181662_b((-tagWidth - 2), 8, 0.01).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
-        worldRenderer.func_181662_b((tagWidth + 1), 8, 0.01).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
-        worldRenderer.func_181662_b((tagWidth + 1), (-1), 0.01).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        worldRenderer.func_181662_b((-tagWidth - 2), (-1), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        worldRenderer.func_181662_b((-tagWidth - 2), 8, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        worldRenderer.func_181662_b((tagWidth + 1), 8, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        worldRenderer.func_181662_b((tagWidth + 1), (-1), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
         tessellator.func_78381_a()
         net.minecraft.client.renderer.GlStateManager.func_179098_w()
     }
