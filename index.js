@@ -27,20 +27,19 @@ const File = Java.type("java.io.File");
 
 request("https://api.github.com/repos/bignigga123/StarMod/releases/latest")
 .then(function(response) {
-    let data = JSON.parse(response)
-    let version = JSON.parse(FileLib.read("StarMod","./metadata.json"))["version"]
-    let newVersion = data.name.split(" ")[0].slice(1)
-    if (newVersion.localeCompare(version, undefined, { numeric: true, sensitivity: 'base' }) == 1) { // If older
-        try {
+    try {
+        let data = JSON.parse(response)
+        let version = JSON.parse(FileLib.read("StarMod","./metadata.json"))["version"]
+        let newVersion = data.name.split(" ")[0].slice(1)
+        if (newVersion.localeCompare(version, undefined, { numeric: true, sensitivity: 'base' }) == 1) { // If older
             urlToFile(data.assets[0].browser_download_url, `${Config.modulesFolder}/temp.zip`)
             FileLib.unzip(`${Config.modulesFolder}/temp.zip`, Config.modulesFolder)
             ChatTriggers.loadCT()
         }
-
-        finally {
-            FileLib.deleteDirectory(new File(Config.modulesFolder, "temp.zip"))
-        }
-
+    }
+    
+    finally {
+        FileLib.deleteDirectory(new File(Config.modulesFolder, "temp.zip"))
     }
 })
 
