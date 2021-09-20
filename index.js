@@ -257,7 +257,7 @@ function renderTag() {
 }
 
 
-const GL11 = Java.type("org.lwjgl.opengl.GL11")
+GL11 = Java.type("org.lwjgl.opengl.GL11")
 const tessellator = Java.type("net.minecraft.client.renderer.Tessellator").func_178181_a()
 const DefaultVertexFormats = Java.type("net.minecraft.client.renderer.vertex.DefaultVertexFormats")
 
