@@ -8,7 +8,7 @@ if (settings) {
 }
 
 else {
-    settings = {"enable": true, "apikey": "", "gay": false, "mode": "both", "position": "head", "size": 12, "grow": false, "walls": false, "shadow": false, "box": true}
+    settings = {"enable": true, "apikey": "", "gay": false, "mode": "both", "position": "head", "size": 12, "grow": false, "walls": false, "shadow": false, "outline": false, "box": true}
 }
 
 let skywarsLevelDict = {}
@@ -37,7 +37,7 @@ request("https://api.github.com/repos/bignigga123/StarMod/releases/latest")
             ChatTriggers.loadCT()
         }
     }
-    
+
     finally {
         FileLib.deleteDirectory(new File(Config.modulesFolder, "temp.zip"))
     }
@@ -62,7 +62,7 @@ function worldLoad() {
 
                 })
         }
-        
+
         else {
             ChatLib.chat("§e§lStar§6§l§lMod§f API key is not set! Set with '/api new' or '/starmod apikey'.")
         }
@@ -146,7 +146,7 @@ function getPlayers() {
                             else {
                                 newName = new ChatComponentText(modeDict[unFormattedName] + " " + nameFormatDict[unFormattedName])
                             }
-                            
+
                             entity.func_178859_a(newName)
                         }
 
@@ -205,7 +205,7 @@ function getfromAPI(username) {
             }
 
             try {
-                bedwarsLevelDict[username] = bedwarsColourAndFormat(getLevelForExp(data.player.stats.Bedwars.Experience)) // Gets experience instead of just level as the nick detector won't work. 
+                bedwarsLevelDict[username] = bedwarsColourAndFormat(getLevelForExp(data.player.stats.Bedwars.Experience)) // Gets experience instead of just level as the nick detector won't work.
             }
 
             catch (error) {
@@ -240,7 +240,7 @@ function renderTag() {
                 if (settings["position"] == "feet") {
                     position = -0.5
                 }
-            
+
                 else {
                     position = 2.65
                 }
@@ -250,7 +250,7 @@ function renderTag() {
                 x = (entity.getLastX() + (entity.getX() - entity.getLastX()) * partialTicks) - (Player.getPlayer().field_70142_S + (Player.getPlayer().field_70165_t-Player.getPlayer().field_70142_S) * partialTicks)
                 y = (entity.getLastY() + (entity.getY() - entity.getLastY()) * partialTicks) - (Player.getPlayer().field_70137_T + (Player.getPlayer().field_70163_u-Player.getPlayer().field_70137_T) * partialTicks)
                 z = (entity.getLastZ() + (entity.getZ() - entity.getLastZ()) * partialTicks) - (Player.getPlayer().field_70136_U + (Player.getPlayer().field_70161_v-Player.getPlayer().field_70136_U) * partialTicks)
-                drawString(str, x, y, z, position, settings["size"], settings["grow"], settings["walls"], settings["shadow"], settings["box"])
+                drawString(str, x, y, z, position, settings["size"], settings["grow"], settings["walls"], settings["shadow"], settings["box"], settings["outline"])
             }
         })
     }
@@ -265,7 +265,7 @@ const renderManager = Renderer.getRenderManager()
 const fontRenderer = Renderer.getFontRenderer()
 const worldRenderer = tessellator.func_178180_c()
 
-function drawString(str, x, y, z, position, scale, grow, walls, shadow, box) {
+function drawString(str, x, y, z, position, scale, grow, walls, shadow, box, outline) {
     let size
 
     if (grow) {
@@ -279,20 +279,20 @@ function drawString(str, x, y, z, position, scale, grow, walls, shadow, box) {
             size = camDistance
         }
     }
-    
+
     else {
         size = 10
     }
 
-    
+
     if (position > 0) {
-       position += size / 500 * scale // set orign point to bottom
+       position += size / 500 * scale // set origin point to bottom
 
 
     }
 
     else {
-        position -= size / 4096 * scale // set orign point to top
+        position -= size / 4096 * scale // set origin point to top
     }
 
     lScale = size / 4096 * scale
@@ -317,13 +317,37 @@ function drawString(str, x, y, z, position, scale, grow, walls, shadow, box) {
         let tagWidth = textWidth / 2
         net.minecraft.client.renderer.GlStateManager.func_179090_x()
         worldRenderer.func_181668_a(7, DefaultVertexFormats.field_181706_f)
-        worldRenderer.func_181662_b((-tagWidth - 2), (-1), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
-        worldRenderer.func_181662_b((-tagWidth - 2), 8, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
-        worldRenderer.func_181662_b((tagWidth + 1), 8, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
-        worldRenderer.func_181662_b((tagWidth + 1), (-1), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        if (outline) {
+            worldRenderer.func_181662_b((-tagWidth - 2), (-2), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+            worldRenderer.func_181662_b((-tagWidth - 2), 9, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+            worldRenderer.func_181662_b((tagWidth + 1), 9, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+            worldRenderer.func_181662_b((tagWidth + 1), (-2), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        }
+        else {
+            worldRenderer.func_181662_b((-tagWidth - 1), (-1), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+            worldRenderer.func_181662_b((-tagWidth - 1), 8, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+            worldRenderer.func_181662_b((tagWidth), 8, 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+            worldRenderer.func_181662_b((tagWidth), (-1), 0.05).func_181666_a(0.0, 0.0, 0.0, .25).func_181675_d()
+        }
+
         tessellator.func_78381_a()
         net.minecraft.client.renderer.GlStateManager.func_179098_w()
     }
+
+    if (outline) {
+        colourlessStr = ChatLib.removeFormatting(str)
+
+        if (str.includes("§l")) {
+            colourlessStr = "§l" + colourlessStr
+        }
+
+        fontRenderer.func_175065_a(colourlessStr,-textWidth / 2 - 1, 0, Renderer.color(0,0,0,255), shadow)
+        fontRenderer.func_175065_a(colourlessStr,-textWidth / 2 + 1, 0, Renderer.color(0,0,0,255), shadow)
+        fontRenderer.func_175065_a(colourlessStr,-textWidth / 2, -1, Renderer.color(0,0,0,255), shadow)
+        fontRenderer.func_175065_a(colourlessStr,-textWidth / 2, 1, Renderer.color(0,0,0,255), shadow)
+        fontRenderer.func_175065_a(colourlessStr,-textWidth / 2, 0, Renderer.color(255,255,255,255), shadow)
+    }
+
     fontRenderer.func_175065_a(str, -textWidth / 2, 0, Renderer.color(255,255,255,255), shadow)
     GL11.glPopMatrix()
 
@@ -416,6 +440,16 @@ register('command', ...args => {
             }
         }
 
+        else if (args.length == 2 && args[1] == "outline") {
+            settings["outline"] = !settings["outline"]
+            if (settings["outline"]) {
+                ChatLib.chat("§6§lStar§e§lMod§7§7 Tag outline has been set to §a§lenabled§7.")
+            }
+            else {
+                ChatLib.chat("§6§lStar§e§lMod§7§7 Tag outline has been set to §c§ldisabled§7.")
+            }
+        }
+
         else {
             ChatLib.chat(colourizeText(["§6§m","§e§m"], ChatLib.getChatBreak()))
             ChatLib.chat(new Message(ChatLib.getCenteredText("§6§lPlayer tag options")))
@@ -425,6 +459,7 @@ register('command', ...args => {
             ChatLib.chat("  &6/starmod tag grow &7- &eToggles if tags grow in distance.")
             ChatLib.chat("  &6/starmod tag walls &7- &eToggles if tags show through walls.")
             ChatLib.chat("  &6/starmod tag shadow &7- &eToggles drop shadow on tags.")
+            ChatLib.chat("  &6/starmod tag outline &7- &eToggles outline on tags.")
             ChatLib.chat("  &6/starmod tag box &7- &eToggles box around tags.")
             ChatLib.chat(colourizeText(["§6§m","§e§m"], ChatLib.getChatBreak()))
         }
@@ -456,7 +491,7 @@ function skywarsColourAndFormat(level) {
     if (level >= 50) {
         return colourizeText(["§c","§6","§e","§a","§b","§d","§5"], "[" + level + "✰]")
     }
-    
+
     if (level >= 45) {
         return "§5[" + level + "✰]"
     }
@@ -480,7 +515,7 @@ function skywarsColourAndFormat(level) {
     if (level >= 20) {
         return "§2[" + level + "✰]"
     }
-    
+
     if (level >= 15) {
         return "§b[" + level + "✰]"
     }
@@ -488,7 +523,7 @@ function skywarsColourAndFormat(level) {
     if (level >= 10) {
         return "§6[" + level + "✰]"
     }
-    
+
     if (level >= 5) {
         return "§f[" + level + "✰]"
     }
@@ -529,7 +564,7 @@ function bedwarsColourAndFormat(level) {
     if (level >= 2300) {
         return colourizeText(["§5","§d","§6"], "[" + level, true) + "§e⚝]"
     }
-    
+
     if (level >= 2200) {
         return colourizeText(["§6", "§f", "§b"], "[" + level, true) + "§3⚝]"
     }
@@ -645,7 +680,7 @@ function colourizeText(colours, str, double = false) {
 const Byte = Java.type("java.lang.Byte");
 const PrintStream = Java.type("java.io.PrintStream");
 const URL = Java.type("java.net.URL");
-        
+
 function urlToFile(url, destination) {
     const d = new File(destination);
     d.getParentFile().mkdirs();
@@ -743,5 +778,5 @@ function getLevelForExp(exp){
         expWithoutPrestiges -= expForEasyLevel;
     }
     //returns players bedwars level, remove the Math.floor if you want the exact bedwars level returned
-    return level + Math.floor(expWithoutPrestiges / 5000); 
+    return level + Math.floor(expWithoutPrestiges / 5000);
 }
