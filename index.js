@@ -335,17 +335,12 @@ function drawString(str, x, y, z, position, scale, grow, walls, shadow, box, out
     }
 
     if (outline) {
-        colourlessStr = ChatLib.removeFormatting(str)
-
-        if (str.includes("§l")) {
-            colourlessStr = "§l" + colourlessStr
-        }
+        colourlessStr = str.replace(/§[0-9a-f]/g, '§r')
 
         fontRenderer.func_175065_a(colourlessStr,-textWidth / 2 - 1, 0, Renderer.color(0,0,0,255), shadow)
         fontRenderer.func_175065_a(colourlessStr,-textWidth / 2 + 1, 0, Renderer.color(0,0,0,255), shadow)
         fontRenderer.func_175065_a(colourlessStr,-textWidth / 2, -1, Renderer.color(0,0,0,255), shadow)
         fontRenderer.func_175065_a(colourlessStr,-textWidth / 2, 1, Renderer.color(0,0,0,255), shadow)
-        fontRenderer.func_175065_a(colourlessStr,-textWidth / 2, 0, Renderer.color(255,255,255,255), shadow)
     }
 
     fontRenderer.func_175065_a(str, -textWidth / 2, 0, Renderer.color(255,255,255,255), shadow)
